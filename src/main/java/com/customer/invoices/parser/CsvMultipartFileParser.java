@@ -7,7 +7,6 @@ import com.customer.invoices.repository.domain.enumeration.InvoiceType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -30,21 +29,23 @@ public class CsvMultipartFileParser implements MultipartFileParser {
     public List<Invoice> parseInvoices(MultipartFile file) {
 
         byte[] bytes;
+        String[] rows;
 
         try {
             bytes = file.getBytes();
-        } catch (IOException e) {
+            String csvFileAsString = new String(bytes);
+            rows = csvFileAsString.split("\n");
+        } catch (Exception e) {
             throw new ParsingException("Cannot parse CSV", e);
         }
 
-        String csvFileAsString = new String(bytes);
-        String[] rows = csvFileAsString.split("\n");
 
         return IntStream.range(1, rows.length) // skipping CSV header at index 0
                 .mapToObj(i -> {
-                    String[] col = rows[i].split(",");
 
                     try {
+
+                        String[] col = rows[i].split(",");
 
                         return Invoice.builder()
                                 .invoiceId(Integer.parseInt(col[2]))

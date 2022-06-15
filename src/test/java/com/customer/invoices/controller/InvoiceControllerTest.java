@@ -77,7 +77,7 @@ class InvoiceControllerTest {
     }
 
     @Test
-    void processInvoices_missingExchangeRateAndValidInvoicesAnd_returnsBadRequest() throws Exception {
+    void processInvoices_missingExchangeRateAndValidInvoicesAndOutputCurrency_returnsBadRequest() throws Exception {
         InvoiceRequest invoiceRequest = buildInvoiceRequest();
         invoiceRequest.getCurrencySymbolToExchangeRate().remove("EUR:USD");
 

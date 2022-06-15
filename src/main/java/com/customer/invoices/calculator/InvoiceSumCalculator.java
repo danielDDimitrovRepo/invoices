@@ -42,7 +42,7 @@ public class InvoiceSumCalculator {
                 .getKey();
 
         Assert.isTrue(baseCurrencyCode.split(":").length == 1,
-                "Base currency should be a pair of codes, but it was a single code: " + baseCurrencyCode);
+                "Base currency should've been a single code, but it was a pair of codes: " + baseCurrencyCode);
 
         BigDecimal totalAmountToBaseCurrency = invoices.stream()
                 .map(i -> new SumData(i.getType(), i.getCurrency(), i.getTotal()))

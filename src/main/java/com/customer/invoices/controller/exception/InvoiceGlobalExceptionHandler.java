@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.stream.Collectors;
@@ -56,9 +57,19 @@ public class InvoiceGlobalExceptionHandler extends ResponseEntityExceptionHandle
         return ResponseEntity.status(status).body(errorsAsText);
     }
 
+    @Override
+    public ResponseEntity<Object> handleMissingServletRequestPart(
+            MissingServletRequestPartException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request) {
+
+        return ResponseEntity.status(status).body(ex.getMessage());
+    }
+
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<String> handleMaxSizeException(MaxUploadSizeExceededException e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(
                 String.format("Request size is too large. Supported file size: %s, supported total request size: %s",
                         supportedFileSize,
@@ -70,18 +81,17 @@ public class InvoiceGlobalExceptionHandler extends ResponseEntityExceptionHandle
             ParsingException.class,
             ParentIsMissingException.class,
             BaseCurrencyNotFoundException.class,
-            CurrencyExchangeRateNotFoundException.class
-    })
+            CurrencyExchangeRateNotFoundException.class,
+            IllegalArgumentException.class})
     public ResponseEntity<String> handleBadRequest(RuntimeException e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler({InvoiceExistsException.class})
+    @ExceptionHandler(InvoiceExistsException.class)
     public ResponseEntity<String> handleDuplicates(RuntimeException e) {
-        log.error(e.getMessage(), e);
-        int httpCodeMiscellaneousWarning = 199;
-        return ResponseEntity.status(httpCodeMiscellaneousWarning).body(e.getMessage());
+        log.info(e.getMessage());
+        return ResponseEntity.status(HttpStatus.OK).body(e.getMessage());
     }
 
 }
