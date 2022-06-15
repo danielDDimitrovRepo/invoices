@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.6.7'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+group = 'com.customer'
+
+bootRun {
+    mainClass = 'com.customer.invoices.InvoicesApplication'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    implementation.exclude(group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j')
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    implementation 'org.apache.commons:commons-csv:1.9.0'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+}

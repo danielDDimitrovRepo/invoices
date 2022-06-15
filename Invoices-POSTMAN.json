@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "5d972ec3-5683-457a-885f-43e36c3ffd9e",
+		"name": "Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Invoices - Postman template",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "invoiceFile",
+							"contentType": "multipart/form-data",
+							"type": "file",
+							"src": "/Users/dimitdan/Desktop/data.csv"
+						},
+						{
+							"key": "invoiceRequest",
+							"value": "{\n  \"currencySymbolToExchangeRate\" : {\n    \"EUR:USD\" : 0.987,\n    \"EUR\" : 1,\n    \"EUR:GBP\" : 0.878\n  },\n  \"outputCurrencyCode\" : \"GBP\",\n  \"vatNumber\" : null\n}",
+							"contentType": "application/json",
+							"type": "text"
+						},
+						{
+							"key": "currencySymbolToExchangeRate",
+							"value": "{\n    \"EUR:USD\" : 0.987,\n    \"EUR\" : 1,\n    \"EUR:GBP\" : 0.878\n  }",
+							"contentType": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "outputCurrencyCode",
+							"value": "GBP",
+							"contentType": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "vatNumber",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/invoices",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
